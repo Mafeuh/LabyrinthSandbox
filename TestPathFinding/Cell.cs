@@ -17,6 +17,7 @@ namespace TestPathFinding
         public bool IsWall { get; set; } = false;
         public bool IsActive { get; set; } = false;
         public bool ParentOnPath { get; set; } = false;
+        public bool IsDead { get;set; } = false;
         public Color GetColor { 
             get
             {
@@ -24,6 +25,7 @@ namespace TestPathFinding
                 if (grid.EndCell == this) return Color.Red;
                 if(ParentOnPath) return Color.Yellow;
                 if (IsActive) return Color.Blue;
+                if(IsDead) return Color.DarkGray;
                 if (IsVisited) return Color.LightBlue;
                 if (IsWall) return Color.Gray;
                 return Color.White;

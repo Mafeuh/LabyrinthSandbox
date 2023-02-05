@@ -18,9 +18,9 @@ namespace TestPathFinding
         public DateTime NextStepTime { get; set; } = DateTime.Now;
         public int CellSize = 1;
         public Grid Grid { get; set; }
-        public List<Cell> PathToShow { get; set; }
+        public List<Cell> PathToShow { get; set; } = new List<Cell>();
         public float WallDensity { get; set; } = 0.5f;
-        public int NextStepDelay { get; set; } = 10;
+        public int NextStepDelay { get; set; } = 100;
         public Simulation(Grid grid) 
         {
             Grid = grid;
@@ -33,6 +33,13 @@ namespace TestPathFinding
                 PathToShow[0].ParentOnPath = true;
                 PathToShow.RemoveAt(0);
                 NextStepTime = DateTime.Now.AddMilliseconds(NextStepDelay / 4);
+                return;
+            }
+
+            if(activeCells.Count == 0)
+            {
+                foreach (Cell cell in Grid.GetAllCells.Where(c => c.IsVisited)) cell.IsDead = true;
+                IsFinished = true;
                 return;
             }
 
@@ -86,6 +93,8 @@ namespace TestPathFinding
             Grid.Draw(sbatch, CellSize);
             sbatch.DrawString(Game1.font, WallDensity.ToString(), new Vector2(240, Grid.Height * CellSize + 60), Color.Black);
 
+            sbatch.DrawString(Game1.font, $"Step Freq.:\n{NextStepDelay}", new Vector2(10, Grid.Height * CellSize + 40), Color.Black);
+
             sbatch.DrawString(Game1.font, $"Next Grid:\nWidth:       {Grid.NextGridWidth}\n\nHeight:      {Grid.NextGridHeight}", new Vector2(600, Grid.Height * CellSize + 10), Color.Black);
         }
 
@@ -119,6 +128,7 @@ namespace TestPathFinding
             IsFinished = false;
             IsPaused = true;
             Grid.Clear();
+            PathToShow.Clear();
         }
     }
 }

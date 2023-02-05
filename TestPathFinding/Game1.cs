@@ -79,30 +79,53 @@ namespace TestPathFinding
                     simulation.ClearGrid();
                 }),
 
+                //BUTTONS FOR MANIPULATING THE SIMULATION'S STEP FREQUENCY
+
+                new Button("+100", 130, simulation.Grid.Height * simulation.CellSize + 40, () =>
+                {
+                    simulation.NextStepDelay += 100;
+                }),
+                new Button("+50", 100, simulation.Grid.Height * simulation.CellSize + 40, () =>
+                {
+                    simulation.NextStepDelay += 50;
+                }),
+                new Button("-50", 100, simulation.Grid.Height * simulation.CellSize + 65, () =>
+                {
+                    simulation.NextStepDelay -= 50;
+                    if(simulation.NextStepDelay <= 0) simulation.NextStepDelay = 1;
+                }),
+                new Button("-100", 130, simulation.Grid.Height * simulation.CellSize + 65, () =>
+                {
+                    simulation.NextStepDelay -= 100;
+                    if(simulation.NextStepDelay <= 0) simulation.NextStepDelay = 1;
+                }),
+
+
+
                 //BUTTONS FOR MANIPULATING THE NEXT GRID'S WIDTH
-                new Button("+50", 750, simulation.Grid.Height * simulation.CellSize + 20, () =>
+                new Button("+50", 1000, simulation.Grid.Height * simulation.CellSize + 20, () =>
                 {
                     Grid.NextGridWidth += 50;
                 }),
-                new Button("+10", 800, simulation.Grid.Height * simulation.CellSize + 20, () =>
+                new Button("+10", 950, simulation.Grid.Height * simulation.CellSize + 20, () =>
                 {
                     Grid.NextGridWidth += 10;
                 }),
-                new Button("+1", 850, simulation.Grid.Height * simulation.CellSize + 20, () =>
+                new Button("+1", 900, simulation.Grid.Height * simulation.CellSize + 20, () =>
                 {
                     Grid.NextGridWidth += 1;
                 }),
-                new Button("-50", 1000, simulation.Grid.Height * simulation.CellSize + 20, () =>
+                new Button("-50", 750, simulation.Grid.Height * simulation.CellSize + 20, () =>
                 {
                     Grid.NextGridWidth -= 50;
                     if(Grid.NextGridWidth <= 0) Grid.NextGridWidth = 1;
                 }),
-                new Button("-10", 950, simulation.Grid.Height * simulation.CellSize + 20, () =>
+                new Button("-10", 800, simulation.Grid.Height * simulation.CellSize + 20, () =>
                 {
                     Grid.NextGridWidth -= 10;
                     if(Grid.NextGridWidth <= 0) Grid.NextGridWidth = 1;
                 }),
-                new Button("-1", 900, simulation.Grid.Height * simulation.CellSize + 20, () =>
+                new Button("-1", 850, simulation.Grid.Height * simulation.CellSize + 20, () =>
                 {
                     Grid.NextGridWidth -= 1;
                     if(Grid.NextGridWidth <= 0) Grid.NextGridWidth = 1;
@@ -110,30 +133,30 @@ namespace TestPathFinding
 
 
                 //BUTTONS FOR MANIPULATING THE NEXT GRID'S HEIGHT
-                new Button("+50", 750, simulation.Grid.Height * simulation.CellSize + 60, () =>
+                new Button("+50", 1000, simulation.Grid.Height * simulation.CellSize + 60, () =>
                 {
                     Grid.NextGridHeight += 50;
                 }),
-                new Button("+10", 800, simulation.Grid.Height * simulation.CellSize + 60, () =>
+                new Button("+10", 950, simulation.Grid.Height * simulation.CellSize + 60, () =>
                 {
                     Grid.NextGridHeight += 10;
                 }),
-                new Button("+1", 850, simulation.Grid.Height * simulation.CellSize + 60, () =>
+                new Button("+1", 900, simulation.Grid.Height * simulation.CellSize + 60, () =>
                 {
                     Grid.NextGridHeight += 1;
                 }),
-                new Button("-50", 1000, simulation.Grid.Height * simulation.CellSize + 60, () =>
+                new Button("-50", 750, simulation.Grid.Height * simulation.CellSize + 60, () =>
                 {
                     Grid.NextGridHeight -= 50;
                     if(Grid.NextGridHeight <= 0) Grid.NextGridHeight = 1;
 
                 }),
-                new Button("-10", 950, simulation.Grid.Height * simulation.CellSize + 60, () =>
+                new Button("-10", 800, simulation.Grid.Height * simulation.CellSize + 60, () =>
                 {
                     Grid.NextGridHeight -= 10;
                     if(Grid.NextGridHeight <= 0) Grid.NextGridHeight = 1;
                 }),
-                new Button("-1", 900, simulation.Grid.Height * simulation.CellSize + 60, () =>
+                new Button("-1", 850, simulation.Grid.Height * simulation.CellSize + 60, () =>
                 {
                     Grid.NextGridHeight -= 1;
                     if(Grid.NextGridHeight <= 0) Grid.NextGridHeight = 1;
@@ -145,6 +168,7 @@ namespace TestPathFinding
                     NewGrid(simulation.Grid);
                 })
             };
+            simulation.ClearGrid();
         }
 
         protected override void Initialize()

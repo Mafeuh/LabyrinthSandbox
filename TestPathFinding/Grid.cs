@@ -79,7 +79,7 @@ namespace TestPathFinding
             }
             for(int i = 0; i <= CellGrid[0].Count; i++)
             {
-                sbatch.Draw(Game1.px1, new Rectangle(0, i * cellSize, Game1.WindowWidth, 1), Color.Black);
+                sbatch.Draw(Game1.px1, new Rectangle(0, i * cellSize, CellGrid.Count * cellSize, 1), Color.Black);
             }
         }
 
@@ -92,6 +92,7 @@ namespace TestPathFinding
                     c.IsVisited = false;
                     c.IsActive = false;
                     c.ParentOnPath = false;
+                    c.IsDead = false;
                 }
             }
         }
