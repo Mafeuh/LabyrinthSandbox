@@ -9,33 +9,32 @@ using System.Threading.Tasks;
 
 namespace TestPathFinding
 {
-    public class Button
+    public class Button : ADrawable
     {
         private string text;
-        private Rectangle transform;
         private bool IsHovered
         {
             get
             {
                 MouseState mState = Mouse.GetState();
 
-                return mState.X > transform.X && mState.Y > transform.Y && mState.X < transform.Right && mState.Y < transform.Bottom;
+                return mState.X > Transform.X && mState.Y > Transform.Y && mState.X < Transform.Right && mState.Y < Transform.Bottom;
             }
         }
         public Action Action { get; }
 
-        public Button(string text, Rectangle transform, Action action)
+        public Button(string text, Rectangle transform, Color color, Action action) : base(transform, color)
         {
             this.text = text;
-            this.transform = transform;
             Action = action;
         }
-        public Button(string text, int x, int y, Action action)
-        {
-            this.text = text;
-            transform = new Rectangle(x, y, Convert.ToInt32(Game1.font.MeasureString(text).X) + 5, Convert.ToInt32(Game1.font.MeasureString(text).Y) + 5);
-            Action = action;
-        }
+        public Button(string text, int x, int y, Color color, Action action)
+            : this(
+                  text,
+                  new Rectangle(x, y, Convert.ToInt32(Game1.font.MeasureString(text).X) + 5, Convert.ToInt32(Game1.font.MeasureString(text).Y) + 5),
+                  color,
+                  action)
+        { }
 
         public void Update()
         {
@@ -45,14 +44,14 @@ namespace TestPathFinding
             }
         }
 
-        public void Draw(SpriteBatch sbatch)
+        public override void Draw(SpriteBatch sbatch)
         {
-            sbatch.Draw(Game1.px1, transform, IsHovered ? Color.White * 0.5f : Color.LightGray);
-            sbatch.Draw(Game1.px1, new Rectangle(transform.X, transform.Y, transform.Width, 2), Color.Black);
-            sbatch.Draw(Game1.px1, new Rectangle(transform.X, transform.Y + transform.Height, transform.Width, 2), Color.Black);
-            sbatch.Draw(Game1.px1, new Rectangle(transform.X, transform.Y, 2, transform.Height), Color.Black);
-            sbatch.Draw(Game1.px1, new Rectangle(transform.X + transform.Width, transform.Y, 2, transform.Height + 2), Color.Black);
-            sbatch.DrawString(Game1.font, text, new Vector2(transform.X + transform.Width / 2 - Game1.font.MeasureString(text).X / 2 + 2, transform.Y + 5), Color.Black);
+            sbatch.Draw(Game1.px1, Transform, IsHovered ? Color.White * 0.5f : DrawColor);
+            sbatch.Draw(Game1.px1, new Rectangle(Transform.X, Transform.Y, Transform.Width, 2), Color.Black);
+            sbatch.Draw(Game1.px1, new Rectangle(Transform.X, Transform.Y + Transform.Height, Transform.Width, 2), Color.Black);
+            sbatch.Draw(Game1.px1, new Rectangle(Transform.X, Transform.Y, 2, Transform.Height), Color.Black);
+            sbatch.Draw(Game1.px1, new Rectangle(Transform.X + Transform.Width, Transform.Y, 2, Transform.Height + 2), Color.Black);
+            sbatch.DrawString(Game1.font, text, new Vector2(Transform.X + Transform.Width / 2 - Game1.font.MeasureString(text).X / 2 + 2, Transform.Y + 5), Color.Black);
         }
     }
 }

@@ -19,9 +19,6 @@ namespace TestPathFinding
         public static bool LeftClick;
         public static bool RightClick;
         public static bool MiddleClick;
-
-        private static List<Button> buttons;
-
         public static int WindowWidth => _graphics.PreferredBackBufferWidth;
         public static int WindowHeight => _graphics.PreferredBackBufferHeight;
 
@@ -49,7 +46,7 @@ namespace TestPathFinding
 
             _graphics.ApplyChanges();
 
-            buttons = new List<Button>()
+            /*buttons = new List<Button>()
             {
                 new Button("Pause / Unpause", 10, simulation.Grid.Height * simulation.CellSize + 10, () => {
                     simulation.SwitchPauseState();
@@ -167,7 +164,7 @@ namespace TestPathFinding
                     simulation.Grid = new Grid(Grid.NextGridWidth, Grid.NextGridHeight);
                     NewGrid(simulation.Grid);
                 })
-            };
+            };*/
             simulation.ClearGrid();
         }
 
@@ -212,10 +209,6 @@ namespace TestPathFinding
                     simulation.Update();
                 }
             }
-            foreach(Button button in buttons)
-            {
-                button.Update();
-            }
 
             base.Update(gameTime);
         }
@@ -227,8 +220,6 @@ namespace TestPathFinding
             _spriteBatch.Begin();
 
             simulation.Draw(_spriteBatch);
-
-            foreach (Button button in buttons) button.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
