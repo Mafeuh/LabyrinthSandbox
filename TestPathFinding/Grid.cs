@@ -33,7 +33,7 @@ namespace TestPathFinding
                 }
                 CellGrid.Add(list);
             }
-            StartCell = CellGrid[0][height - 1];
+            StartCell = CellGrid[5][5];
             EndCell = CellGrid[width - 1][0];
 
             Instance = this;

@@ -40,29 +40,36 @@ namespace TestPathFinding
         {
             this.grid = grid;
         }
+        public List<Cell> GetUnvisitedNeighbors => GetNeighbors.Where(n => !n.IsVisited).ToList();
         public List<Cell> GetNeighbors
         {
             get
             {
-                List<Cell> neighbors = new List<Cell>();
+                List<Cell> cells = new List<Cell>();
+                if(position.X - 1 >= 0) cells.Add(grid.GetCell(position.X - 1, position.Y));
+                if(position.X + 1 < grid.Width - 1) cells.Add(grid.GetCell(position.X + 1, position.Y));
+                if(position.Y - 1 >= 0) cells.Add(grid.GetCell(position.X, position.Y - 1));
+                if(position.Y + 1 < grid.Height - 1) cells.Add(grid.GetCell(position.X, position.Y + 1));
 
-                try
+                return cells;
+            }
+        }
+        public List<Cell> GetRoundNeighbors
+        {
+            get
+            {
+                List<Cell> cells = GetNeighbors;
+                if(position.X - 1 >= 0)
                 {
-                    neighbors.Add(grid.GetCell(position.X + 1, position.Y));
-                } catch { }
-                try
+                    if (position.Y - 1 >= 0) cells.Add(grid.GetCell(position.X - 1, position.Y - 1));
+                    if (position.Y + 1 < grid.Height - 1) cells.Add(grid.GetCell(position.X - 1, position.Y + 1));
+                }
+                if(position.X + 1 < grid.Width)
                 {
-                    neighbors.Add(grid.GetCell(position.X - 1, position.Y));
-                } catch { }
-                try
-                {
-                    neighbors.Add(grid.GetCell(position.X, position.Y - 1));
-                } catch { }
-                try
-                {
-                    neighbors.Add(grid.GetCell(position.X, position.Y + 1));
-                } catch { }
-                return neighbors;
+                    if (position.Y - 1 >= 0) cells.Add(grid.GetCell(position.X + 1, position.Y - 1));
+                    if(position.Y + 1 < grid.Height - 1) cells.Add(grid.GetCell(position.X + 1, position.Y + 1));
+                }
+                return cells;
             }
         }
         public void Draw(SpriteBatch sbatch, int size)

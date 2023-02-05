@@ -192,7 +192,8 @@ namespace TestPathFinding
 
             NewGrid(simulation.Grid);
 
-            simulation.WGA = new RandomWalls(simulation.Grid);
+            //simulation.WGA = new RandomWalls(simulation.Grid);
+            simulation.WGA = new RandPrim(simulation.Grid);
         }
 
         public void AddEvent(TimedEvent timedEvent)
@@ -205,7 +206,14 @@ namespace TestPathFinding
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            foreach (var ev in events.Where(e => e.ExecutionTime <= DateTime.Now)) ev.Action.Invoke();
+            for(int i = 0; i < events.Count; i++)
+            {
+                if (events[i].ExecutionTime <= DateTime.Now)
+                {
+                    events[i].Action.Invoke();
+                    events.RemoveAt(i);
+                }
+            }
 
             curState = Mouse.GetState();
 

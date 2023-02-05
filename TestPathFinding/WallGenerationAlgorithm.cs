@@ -59,9 +59,9 @@ namespace TestPathFinding
             foreach(Cell cell in grid.GetAllCells) cell.IsWall = new Random().NextDouble() < WallDensity;
         }
     }
-    public class DepthFirst : WallGenerationAlgorithm
+    public class RandPrim : WallGenerationAlgorithm
     {
-        public DepthFirst(Grid grid) : base("Depth First", grid)
+        public RandPrim(Grid grid) : base("Depth First", grid)
         {
             HasBorderWalls = true;
 
@@ -72,22 +72,26 @@ namespace TestPathFinding
         }
         public override void Generate()
         {
-            Generate(grid.StartCell);
-        }
-        public void Generate(Cell currentCell)
-        {
-            Cell nextCell;
-            int nbNeighbors = currentCell.GetNeighbors.Count(n => !n.IsVisited);
-            if (nbNeighbors == 0)
+            foreach (Cell c in grid.GetAllCells) c.IsWall = true;
+            grid.EndCell.IsWall = false;
+            grid.StartCell.IsWall = false;
+
+            List<Cell> wallList = new List<Cell>();
+
+            Cell current = grid.StartCell;
+
+            for(int i = 0; i < 100; i++)
             {
-                currentCell.IsVisited = true;
-                nextCell = currentCell.GetNeighbors[new Random().Next(nbNeighbors)];
-            } else
-            {
-                nextCell = currentCell.ParentCell;
+                wallList.AddRange(current.GetNeighbors.Where(n => n.IsWall && n.GetNeighbors.Count(n2 => !n2.IsWall) == 1));
+                current = wallList[new Random().Next(wallList.Count)];
+                wallList.Remove(current);
+                current.IsWall = false;
             }
-            Game1.Instance.AddEvent(new TimedEvent(() => Generate(nextCell), 100));
-            Generate(nextCell);
+            /* Commencer au premier noeud
+             * Ajouter tous ses murs voisinnants dans la liste des murs à visiter, SAUF ceux qui ont plus de 2 voisins "Chemins"
+             * Tant qu'il y a des murs dans la liste, prendre un mur au hasard de la liste et recommencer.
+             * 
+             */
         }
     }
 }
