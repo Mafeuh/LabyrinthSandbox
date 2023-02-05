@@ -17,8 +17,9 @@ namespace TestPathFinding
             get
             {
                 MouseState mState = Mouse.GetState();
+                Rectangle trueTransform = new Rectangle(Transform.X, Transform.Y + Game1.simulation.CellSize * Game1.simulation.Grid.Height, Transform.Width, Transform.Height);
 
-                return mState.X > Transform.X && mState.Y > Transform.Y && mState.X < Transform.Right && mState.Y < Transform.Bottom;
+                return mState.X > trueTransform.X && mState.Y > trueTransform.Y && mState.X < trueTransform.Right && mState.Y < trueTransform.Bottom;
             }
         }
         public Action Action { get; }
@@ -46,12 +47,13 @@ namespace TestPathFinding
 
         public override void Draw(SpriteBatch sbatch)
         {
-            sbatch.Draw(Game1.px1, Transform, IsHovered ? Color.White * 0.5f : DrawColor);
-            sbatch.Draw(Game1.px1, new Rectangle(Transform.X, Transform.Y, Transform.Width, 2), Color.Black);
-            sbatch.Draw(Game1.px1, new Rectangle(Transform.X, Transform.Y + Transform.Height, Transform.Width, 2), Color.Black);
-            sbatch.Draw(Game1.px1, new Rectangle(Transform.X, Transform.Y, 2, Transform.Height), Color.Black);
-            sbatch.Draw(Game1.px1, new Rectangle(Transform.X + Transform.Width, Transform.Y, 2, Transform.Height + 2), Color.Black);
-            sbatch.DrawString(Game1.font, text, new Vector2(Transform.X + Transform.Width / 2 - Game1.font.MeasureString(text).X / 2 + 2, Transform.Y + 5), Color.Black);
+            Rectangle trueTransform = new Rectangle(Transform.X, Transform.Y + Game1.simulation.CellSize * Game1.simulation.Grid.Height, Transform.Width, Transform.Height);
+            sbatch.Draw(Game1.px1, trueTransform, IsHovered ? Color.White * 0.5f : Color.Wheat);
+            sbatch.Draw(Game1.px1, new Rectangle(trueTransform.X, trueTransform.Y, trueTransform.Width, 2), Color.Black);
+            sbatch.Draw(Game1.px1, new Rectangle(trueTransform.X, trueTransform.Y + trueTransform.Height, trueTransform.Width, 2), Color.Black);
+            sbatch.Draw(Game1.px1, new Rectangle(trueTransform.X, trueTransform.Y, 2, trueTransform.Height), Color.Black);
+            sbatch.Draw(Game1.px1, new Rectangle(trueTransform.X + trueTransform.Width, trueTransform.Y, 2, trueTransform.Height + 2), Color.Black);
+            sbatch.DrawString(Game1.font, text, new Vector2(trueTransform.X + trueTransform.Width / 2 - Game1.font.MeasureString(text).X / 2 + 2, trueTransform.Y + 5), Color.Black);
         }
     }
 }

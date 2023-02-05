@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TestPathFinding
 {
@@ -18,13 +19,12 @@ namespace TestPathFinding
         public DateTime NextStepTime { get; set; } = DateTime.Now;
         public int CellSize = 1;
         public Grid Grid { get; set; }
-        public WallGenerationAlgorithm WallGenerationAlgorithm { get; set; }
+        public WallGenerationAlgorithm WGA { get; set; }
         public List<Cell> PathToShow { get; set; } = new List<Cell>();
         public int NextStepDelay { get; set; } = 100;
         public Simulation(Grid grid) 
         {
             Grid = grid;
-            WallGenerationAlgorithm = new RandomWalls(grid);
             activeCells.Add(grid.StartCell);
         }
         public void Update()
@@ -77,7 +77,7 @@ namespace TestPathFinding
         public void SpawnGridWalls()
         {
             ClearGrid();
-            WallGenerationAlgorithm.Generate();
+            WGA.Generate();
         }
 
         public void PrevStep()
@@ -91,8 +91,22 @@ namespace TestPathFinding
         }
         public void Draw(SpriteBatch sbatch)
         {
+            List<ADrawable> ui = new List<ADrawable>()
+            {
+                new Label("Simulation", new Point(5, 2), Color.Black),
+                new Label($"{WGA.AlgorithmName}", new Point(5, 20), Color.Black),
+                new Button(" < ", 5, 40, Color.Black, () => { }),
+                new Button(" > ", 60, 40, Color.Black,() => { }),
+                new Button("Generate Walls", 120, 2, Color.Black,() => { WGA.Generate(); })
+            };
+            foreach (var element in ui)
+            {
+                if (element is Button button) button.Update();
+                element.Draw(sbatch);
+            }
+
             Grid.Draw(sbatch, CellSize);
-            WallGenerationAlgorithm.DrawMenu(sbatch);
+            WGA.DrawMenu(sbatch);
         }
 
         public void SwitchPauseState()

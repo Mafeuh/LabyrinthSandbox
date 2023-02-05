@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TestPathFinding
 {
@@ -19,8 +20,11 @@ namespace TestPathFinding
         public static bool LeftClick;
         public static bool RightClick;
         public static bool MiddleClick;
+        public static Color BackgroundColor = Color.CornflowerBlue;
         public static int WindowWidth => _graphics.PreferredBackBufferWidth;
         public static int WindowHeight => _graphics.PreferredBackBufferHeight;
+
+        public List<TimedEvent> events = new List<TimedEvent>();
 
         public Game1()
         {
@@ -187,12 +191,21 @@ namespace TestPathFinding
             font = Content.Load<SpriteFont>("font");
 
             NewGrid(simulation.Grid);
+
+            simulation.WGA = new RandomWalls(simulation.Grid);
+        }
+
+        public void AddEvent(TimedEvent timedEvent)
+        {
+            events.Add(timedEvent);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            foreach (var ev in events.Where(e => e.ExecutionTime <= DateTime.Now)) ev.Action.Invoke();
 
             curState = Mouse.GetState();
 
@@ -201,7 +214,9 @@ namespace TestPathFinding
             MiddleClick = curState.MiddleButton == ButtonState.Pressed && prevState.MiddleButton == ButtonState.Released;
 
             prevState = Mouse.GetState();
-            
+
+            simulation.WGA.Update();
+
             if (!simulation.IsPaused)
             {
                 if(DateTime.Now >= simulation.NextStepTime)
@@ -215,7 +230,7 @@ namespace TestPathFinding
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(BackgroundColor);
 
             _spriteBatch.Begin();
 
