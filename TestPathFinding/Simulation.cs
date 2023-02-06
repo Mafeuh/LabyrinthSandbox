@@ -13,10 +13,7 @@ namespace TestPathFinding
     public class Simulation
     {
         private List<Cell> activeCells = new List<Cell>();
-        /// <summary>
-        /// Just a percentage, can be used for a lot of things
-        /// </summary>
-        public Single Percentage { get; set; }
+        public bool HasStarted { get; set; } = false;
         public bool AutoPlay { get; set; } = false;
         public bool Reverse { get; set; } = false;
         public bool IsPaused { get; set; } = true;
@@ -31,6 +28,29 @@ namespace TestPathFinding
         {
             Grid = grid;
             activeCells.Add(grid.StartCell);
+        }
+        public void InputMain()
+        {
+            if (
+                !HasStarted
+                &&
+                Game1.Instance.CurrentState.X < Grid.Width * CellSize &&
+                Game1.Instance.CurrentState.Y < Grid.Height * CellSize &&
+                Game1.Instance.CurrentState.X > 0 &&
+                Game1.Instance.CurrentState.Y > 0
+                )
+            {
+                if (Game1.LeftClick)
+                {
+                    Grid.StartCell = Grid.GetCell(Game1.Instance.CurrentState.X / CellSize, Game1.Instance.CurrentState.Y / CellSize);
+                    activeCells.Clear();
+                    activeCells.Add(Grid.StartCell);
+                }
+                if (Game1.RightClick)
+                {
+                    Grid.EndCell = Grid.GetCell(Game1.Instance.CurrentState.X / CellSize, Game1.Instance.CurrentState.Y / CellSize);
+                }
+            }
         }
         public void Update()
         {
@@ -61,7 +81,6 @@ namespace TestPathFinding
             if (Reverse) PrevStep();
             else NextStep();
         }
-
         public void NextStep()
         {
             List<Cell> nextCells = new List<Cell>();
@@ -78,13 +97,11 @@ namespace TestPathFinding
             }
             activeCells = nextCells;
         }
-
         public void SpawnGridWalls()
         {
             ClearGrid();
             WGA.Generate();
         }
-
         public void PrevStep()
         {
             List<Cell> prevCells = new List<Cell>();
@@ -98,35 +115,28 @@ namespace TestPathFinding
         {
             List<ADrawable> ui = new List<ADrawable>()
             {
-                new Label<string>("Simulation", new Point(5, 2), Color.Black),
-                new Label<string>(WGA.AlgorithmName, new Point(5, 20), Color.Black),
-                new Button(" < ", 5, 40, Color.Black, () => { PrevWallGenType(); }),
-                new Button(" > ", 60, 40, Color.Black,() => { NextWallGenType(); }),
-                new Button("Clear", 120, 40, Color.Black, () =>
+                new Label("Simulation", new Point(5, 2), Color.Black),
+                new Label(WGA.AlgorithmName, new Point(5, 20), Color.Black),
+                new Button("<", new Point(5, 40), new Point(30, 0), Color.Black, () => { PrevWallGenType(); }),
+                new Button(">", new Point(40, 40), new Point(30, 0), Color.Black,() => { NextWallGenType(); }),
+                new Button("Clear", new Point(5, 70), new Point(65, 0), Color.Black, () =>
                 {
-                    foreach(Cell c in Grid.GetAllCells)
-                    {
-                        c.IsVisited = false;
-                        c.IsWall = false;
-                        c.IsActive = false;
-                        c.IsDead = false;
-                        c.ParentOnPath = false;
-                    }
+                    ClearGrid();
+                    HasStarted = false;
                 }),
-                new Button("Generate Walls", 120, 2, Color.Black,() => { WGA.Generate(); }),
-                new Button("Solve", 400, 10, Color.Black, () => { SwitchPauseState(); }),
+                new Button("Generate Walls", 120, 2, Color.Black,() => 
+                { 
+                    WGA.Generate();
+                    HasStarted = true;
+                }),
+                new Button("Start/Stop/Resume", 400, 10, Color.Black, () => 
+                {
+                    HasStarted = true;
 
-                new Button("TestVoisins", 400, 50, Color.Black, () =>
-                {
-                    foreach(Cell c in Grid.StartCell.GetNeighbors)
-                    {
-                        c.IsVisited = true;
-                    }
+                    SwitchPauseState(); 
                 }),
-                new Button("Test2", 400, 80, Color.Black, () =>
-                {
-                    Grid.GetCell(2, Grid.Height - 1).IsVisited = true;
-                })
+                new Label($"{Game1.Instance.CurrentState.X / CellSize}", new Point(300, 10), Color.Black),
+                new Label($"{Game1.Instance.CurrentState.Y / CellSize}", new Point(350, 10), Color.Black),
             };
             foreach (var element in ui)
             {
@@ -161,6 +171,7 @@ namespace TestPathFinding
 
         public void ClearGrid()
         {
+            PathToShow.Clear();
             activeCells = new List<Cell>()
             {
                 Grid.StartCell
@@ -168,7 +179,6 @@ namespace TestPathFinding
             IsFinished = false;
             IsPaused = true;
             Grid.Clear();
-            PathToShow.Clear();
         }
 
         public void NextWallGenType()

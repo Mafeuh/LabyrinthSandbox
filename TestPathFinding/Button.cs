@@ -24,15 +24,23 @@ namespace TestPathFinding
         }
         public Action Action { get; }
 
-        public Button(string text, Rectangle transform, Color color, Action action) : base(transform, color)
+        public Button(string text, Point position, Point dimensions, Color color, Action action) : base(new Rectangle(position, dimensions), color)
         {
+            if(dimensions.Y < Game1.font.MeasureString(text).X + 5)
+            {
+                dimensions.Y = (int)Game1.font.MeasureString(text).Y + 5;
+            }
+
+            Transform = new Rectangle(position, dimensions);
+
             this.text = text;
             Action = action;
         }
         public Button(string text, int x, int y, Color color, Action action)
             : this(
                   text,
-                  new Rectangle(x, y, Convert.ToInt32(Game1.font.MeasureString(text).X) + 5, Convert.ToInt32(Game1.font.MeasureString(text).Y) + 5),
+                  new Point(x, y),
+                  new Point(Convert.ToInt32(Game1.font.MeasureString(text).X) + 5, Convert.ToInt32(Game1.font.MeasureString(text).Y) + 5),
                   color,
                   action)
         { }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "butHQaHWXG/WT0eDcdVC5uslNKDtaMJoYwzzjuyRcjBOT0MbDMUnKWdr+LVfIUnMS3LVM9ZOScI+3RGth6fb1A==",
+  "dgSpecHash": "c/JRl2YuWlNaiaDTy+KSuRJbhpSzjw/ar+8D36z3ub+ztJ97Bk/APd1zEHsvlOJHSX8EAHuJmeDpo52LhlWsEg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\leoma\\source\\repos\\LabyrinthSandbox\\TestPathFinding\\TestPathFinding.csproj",
+  "projectFilePath": "C:\\Users\\leoma\\source\\repos\\TestPathFinding\\TestPathFinding\\TestPathFinding.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leoma\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
     "C:\\Users\\leoma\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512"

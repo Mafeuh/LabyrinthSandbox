@@ -27,7 +27,7 @@ namespace TestPathFinding
             this.grid = grid;
         }
         public abstract void Generate();
-        public void DrawMenu(SpriteBatch sbatch)
+        public virtual void DrawMenu(SpriteBatch sbatch)
         {
             foreach (var item in MenuItems)
             {
@@ -37,23 +37,16 @@ namespace TestPathFinding
         }
         public void Update()
         {
+
             foreach(var item in MenuItems)
             {
                 item.Update();
             }
         }
-        public class ValueContainer<T>
-        {
-            public ref T Value;
-            public ValueContainer(T value)
-            {
-                Value = value;
-            }
-        }
     }
     public class RandomWalls : WallGenerationAlgorithm
     {
-        public ValueContainer<float> WallDensity { get; set; } = new ValueContainer<float>(0.5f);
+        public float WallDensity { get; set; } = 0.5f;
         public RandomWalls(Grid grid) : base("Random Walls", grid)
         {
 
@@ -61,17 +54,26 @@ namespace TestPathFinding
 
             MenuItems = new List<ADrawable>()
             {
-                new Label<float>(Game1.simulation.Percentage, new Point(165, 30), Color.Black),
                 new Button("-0.05", 165, 60, Color.Black, () =>
                 {
-                    
+                    WallDensity -= 0.05f;
                 })
             };
         }
         public RandomWalls() : this(Game1.simulation.Grid) { }
         public override void Generate()
         {
-            foreach(Cell cell in grid.GetAllCells) cell.IsWall = new Random().NextDouble() < WallDensity.Value;
+            foreach(Cell cell in grid.GetAllCells) cell.IsWall = new Random().NextDouble() < WallDensity;
+        }
+        public override void DrawMenu(SpriteBatch sbatch)
+        {
+            base.DrawMenu(sbatch);
+            List<ADrawable> list = new List<ADrawable>()
+            {
+                new Label($"{WallDensity}", new Point(165, 30), Color.Black)
+            };
+
+            list.ForEach(a => a.Draw(sbatch));
         }
     }
     public class RandPrim : WallGenerationAlgorithm
@@ -83,7 +85,6 @@ namespace TestPathFinding
 
             MenuItems = new List<ADrawable>()
             {
-                new Label<string>("May Freeze for a bit", new Point(110, 30), Color.Red)
             };
         }
         public RandPrim() : this(Game1.simulation.Grid) { }
@@ -94,19 +95,6 @@ namespace TestPathFinding
             grid.StartCell.IsWall = false;
 
             Generate(grid.StartCell);
-            /*
-                        List<Cell> wallList = new List<Cell>();
-
-                        Cell current = grid.StartCell;
-
-                        do {
-                            wallList.AddRange(current.GetNeighbors.Where(n => n.IsWall));
-                            wallList.RemoveAll(n => n.GetNeighbors.Count(n2 => !n2.IsWall) != 1);
-                            current = wallList[new Random().Next(wallList.Count)];
-                            wallList.Remove(current);
-                            current.IsWall = false;
-                        } while(wallList.Count > 0);*/
-
         }
         public void Generate(Cell cell)
         {
@@ -121,7 +109,7 @@ namespace TestPathFinding
             } else
             {
                 grid.EndCell.IsWall = false;
-                foreach (Cell c in grid.EndCell.GetRoundNeighbors) c.IsWall = false;
+                foreach (Cell c in grid.EndCell.GetNeighbors) c.IsWall = false;
             }
         }
     }

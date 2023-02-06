@@ -10,29 +10,21 @@ using static TestPathFinding.WallGenerationAlgorithm;
 namespace TestPathFinding
 {
 
-    public class Label<T> : ADrawable
+    public class Label : ADrawable
     {
         private string Text { get; set; }
-        private ValueContainer<T> Value { get; set; }
-        public Label(T value, Rectangle transform, Color color) : base(transform, color) 
+        public Label(string text, Rectangle transform, Color color) : base(transform, color) 
         {
-            Value = new ValueContainer<T>(value);
+            Text = text;
         }
-        public void SetValue(T value)
+        public Label(string text, Point position, Color color) : base(new Rectangle(position, new Point(0)), color)
         {
-            Value = new ValueContainer<T>(value);
+            Text = text;
         }
-        public Label(T value, Point position, Color color) : base(new Rectangle(position, new Point(0)), color)
-        {
-            Value = new ValueContainer<T>(value);
-        }
-        public override void Update()
-        {
-
-        }
+        public override void Update() { }
         public override void Draw(SpriteBatch sbatch)
         {
-            sbatch.DrawString(Game1.font, Value.Value.ToString(), new Vector2(Transform.X, Game1.simulation.CellSize * Game1.simulation.Grid.Height + Transform.Y), DrawColor);
+            sbatch.DrawString(Game1.font, Text, new Vector2(Transform.X, Game1.simulation.CellSize * Game1.simulation.Grid.Height + Transform.Y), DrawColor);
         }
     }
 }

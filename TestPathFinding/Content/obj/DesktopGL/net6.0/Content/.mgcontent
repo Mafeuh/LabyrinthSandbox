@@ -4,8 +4,8 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/leoma/source/repos/LabyrinthSandbox/TestPathFinding/Content/1px.png</File>
-    <File>C:/Users/leoma/source/repos/LabyrinthSandbox/TestPathFinding/Content/font.spritefont</File>
+    <File>C:/Users/leoma/source/repos/TestPathFinding/TestPathFinding/Content/1px.png</File>
+    <File>C:/Users/leoma/source/repos/TestPathFinding/TestPathFinding/Content/font.spritefont</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

@@ -21,9 +21,9 @@ namespace TestPathFinding
         public Color GetColor { 
             get
             {
-                if (grid.StartCell == this) return Color.Green;
+                if (grid.StartCell == this) return Color.DarkGreen;
                 if (grid.EndCell == this) return Color.Red;
-                if(ParentOnPath) return Color.Yellow;
+                if(ParentOnPath) return Color.Green;
                 if (IsActive) return Color.Blue;
                 if(IsDead) return Color.DarkGray;
                 if (IsVisited) return Color.LightBlue;
@@ -47,9 +47,9 @@ namespace TestPathFinding
             {
                 List<Cell> cells = new List<Cell>();
                 if(position.X - 1 >= 0) cells.Add(grid.GetCell(position.X - 1, position.Y));
-                if(position.X + 1 < grid.Width - 1) cells.Add(grid.GetCell(position.X + 1, position.Y));
+                if(position.X + 1 < grid.Width) cells.Add(grid.GetCell(position.X + 1, position.Y));
                 if(position.Y - 1 >= 0) cells.Add(grid.GetCell(position.X, position.Y - 1));
-                if(position.Y + 1 < grid.Height - 1) cells.Add(grid.GetCell(position.X, position.Y + 1));
+                if(position.Y + 1 < grid.Height) cells.Add(grid.GetCell(position.X, position.Y + 1));
 
                 return cells;
             }

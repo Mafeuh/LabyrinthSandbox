@@ -10,6 +10,8 @@ namespace TestPathFinding
 {
     public class Grid
     {
+        private static Random rnd = new Random();
+
         public static int NextGridWidth;
         public static int NextGridHeight;
 
@@ -32,8 +34,8 @@ namespace TestPathFinding
                 }
                 CellGrid.Add(list);
             }
-            StartCell = CellGrid[0][height - 2];
-            EndCell = CellGrid[width - 2][0];
+            StartCell = CellGrid[rnd.Next(Width)][rnd.Next(Height)];
+            EndCell = CellGrid[rnd.Next(Width)][rnd.Next(Height)];
 
             NextGridWidth= Width;
             NextGridHeight= Height;
