@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/leoma/source/repos/TestPathFinding/TestPathFinding/Content/font.spritefont</SourceFile>
-  <SourceTime>2022-07-26T13:44:10+02:00</SourceTime>
-  <DestFile>C:/Users/leoma/source/repos/TestPathFinding/TestPathFinding/Content/bin/DesktopGL/Content/font.xnb</DestFile>
-  <DestTime>2023-02-04T19:53:18.4127548+01:00</DestTime>
+  <SourceFile>C:/Users/leoma/source/repos/LabyrinthSandbox/TestPathFinding/Content/font.spritefont</SourceFile>
+  <SourceTime>2023-02-06T09:19:34.7321405+01:00</SourceTime>
+  <DestFile>C:/Users/leoma/source/repos/LabyrinthSandbox/TestPathFinding/Content/bin/DesktopGL/Content/font.xnb</DestFile>
+  <DestTime>2023-02-06T09:21:26.6243212+01:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

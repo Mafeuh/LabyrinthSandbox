@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\leoma\\source\\repos\\TestPathFinding\\TestPathFinding\\TestPathFinding.csproj": {}
+    "C:\\Users\\leoma\\source\\repos\\LabyrinthSandbox\\TestPathFinding\\TestPathFinding.csproj": {}
   },
   "projects": {
-    "C:\\Users\\leoma\\source\\repos\\TestPathFinding\\TestPathFinding\\TestPathFinding.csproj": {
+    "C:\\Users\\leoma\\source\\repos\\LabyrinthSandbox\\TestPathFinding\\TestPathFinding.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\leoma\\source\\repos\\TestPathFinding\\TestPathFinding\\TestPathFinding.csproj",
+        "projectUniqueName": "C:\\Users\\leoma\\source\\repos\\LabyrinthSandbox\\TestPathFinding\\TestPathFinding.csproj",
         "projectName": "TestPathFinding",
-        "projectPath": "C:\\Users\\leoma\\source\\repos\\TestPathFinding\\TestPathFinding\\TestPathFinding.csproj",
+        "projectPath": "C:\\Users\\leoma\\source\\repos\\LabyrinthSandbox\\TestPathFinding\\TestPathFinding.csproj",
         "packagesPath": "C:\\Users\\leoma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\leoma\\source\\repos\\TestPathFinding\\TestPathFinding\\obj\\",
+        "outputPath": "C:\\Users\\leoma\\source\\repos\\LabyrinthSandbox\\TestPathFinding\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\leoma\\AppData\\Roaming\\NuGet\\NuGet.Config",

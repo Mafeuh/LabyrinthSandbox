@@ -82,7 +82,8 @@ namespace TestPathFinding
 
             for(int i = 0; i < 100; i++)
             {
-                wallList.AddRange(current.GetNeighbors.Where(n => n.IsWall && n.GetNeighbors.Count(n2 => !n2.IsWall) == 1));
+                wallList.AddRange(current.GetNeighbors.Where(n => n.IsWall));
+                foreach (Cell cell in wallList) if (cell.GetNeighbors.Count(n => !n.IsWall) != 1) wallList.Remove(cell);
                 current = wallList[new Random().Next(wallList.Count)];
                 wallList.Remove(current);
                 current.IsWall = false;
