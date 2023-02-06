@@ -37,7 +37,7 @@ namespace TestPathFinding
                   action)
         { }
 
-        public void Update()
+        public override void Update()
         {
             if(IsHovered && Game1.LeftClick)
             {

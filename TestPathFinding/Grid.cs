@@ -10,7 +10,6 @@ namespace TestPathFinding
 {
     public class Grid
     {
-        private static Grid Instance;
         public static int NextGridWidth;
         public static int NextGridHeight;
 
@@ -33,10 +32,9 @@ namespace TestPathFinding
                 }
                 CellGrid.Add(list);
             }
-            StartCell = CellGrid[5][5];
-            EndCell = CellGrid[width - 1][0];
+            StartCell = CellGrid[0][height - 2];
+            EndCell = CellGrid[width - 2][0];
 
-            Instance = this;
             NextGridWidth= Width;
             NextGridHeight= Height;
         }
@@ -57,7 +55,7 @@ namespace TestPathFinding
         }
         public Cell GetCell(int x, int y)
         {
-            if(x < 0 || y < 0 || x > Width - 1 || y > Height - 1) throw new ArgumentException();
+            if(x < 0 || y < 0 || x > Width || y > Height) throw new ArgumentException();
             return CellGrid[x][y];
         }
 

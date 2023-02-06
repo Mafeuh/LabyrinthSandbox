@@ -11,6 +11,12 @@ namespace TestPathFinding
 {
     public abstract class WallGenerationAlgorithm
     {
+        public static List<Type> WGAList = new List<Type>()
+        {
+            typeof(RandomWalls),
+            typeof(RandPrim),
+        };
+
         protected Grid grid;
         public virtual bool HasBorderWalls { get; set; }
         public string AlgorithmName { get; set; }
@@ -33,66 +39,90 @@ namespace TestPathFinding
         {
             foreach(var item in MenuItems)
             {
-                if(item is Button button) button.Update();
+                item.Update();
+            }
+        }
+        public class ValueContainer<T>
+        {
+            public ref T Value;
+            public ValueContainer(T value)
+            {
+                Value = value;
             }
         }
     }
     public class RandomWalls : WallGenerationAlgorithm
     {
-        public float WallDensity { get; set; } = 0.5f;
+        public ValueContainer<float> WallDensity { get; set; } = new ValueContainer<float>(0.5f);
         public RandomWalls(Grid grid) : base("Random Walls", grid)
         {
+
             HasBorderWalls = false;
 
             MenuItems = new List<ADrawable>()
             {
-                new Label($"{this.WallDensity}", new Point(165, 30), Color.Black),
+                new Label<float>(Game1.simulation.Percentage, new Point(165, 30), Color.Black),
                 new Button("-0.05", 165, 60, Color.Black, () =>
                 {
-                    WallDensity = Convert.ToSingle(Math.Round(WallDensity - 0.05f, 2));
-                    (MenuItems[0] as Label).Text = WallDensity.ToString();
+                    
                 })
             };
         }
+        public RandomWalls() : this(Game1.simulation.Grid) { }
         public override void Generate()
         {
-            foreach(Cell cell in grid.GetAllCells) cell.IsWall = new Random().NextDouble() < WallDensity;
+            foreach(Cell cell in grid.GetAllCells) cell.IsWall = new Random().NextDouble() < WallDensity.Value;
         }
     }
     public class RandPrim : WallGenerationAlgorithm
     {
-        public RandPrim(Grid grid) : base("Depth First", grid)
+        private List<Cell> wallList= new List<Cell>();
+        public RandPrim(Grid grid) : base("Rand Prim", grid)
         {
             HasBorderWalls = true;
 
             MenuItems = new List<ADrawable>()
             {
-
+                new Label<string>("May Freeze for a bit", new Point(110, 30), Color.Red)
             };
         }
+        public RandPrim() : this(Game1.simulation.Grid) { }
         public override void Generate()
         {
             foreach (Cell c in grid.GetAllCells) c.IsWall = true;
             grid.EndCell.IsWall = false;
             grid.StartCell.IsWall = false;
 
-            List<Cell> wallList = new List<Cell>();
+            Generate(grid.StartCell);
+            /*
+                        List<Cell> wallList = new List<Cell>();
 
-            Cell current = grid.StartCell;
+                        Cell current = grid.StartCell;
 
-            for(int i = 0; i < 100; i++)
+                        do {
+                            wallList.AddRange(current.GetNeighbors.Where(n => n.IsWall));
+                            wallList.RemoveAll(n => n.GetNeighbors.Count(n2 => !n2.IsWall) != 1);
+                            current = wallList[new Random().Next(wallList.Count)];
+                            wallList.Remove(current);
+                            current.IsWall = false;
+                        } while(wallList.Count > 0);*/
+
+        }
+        public void Generate(Cell cell)
+        {
+            wallList.AddRange(cell.GetNeighbors.Where(n => n.IsWall));
+            wallList.RemoveAll(n => n.GetNeighbors.Count(n2 => !n2.IsWall) != 1);
+            if(wallList.Count > 0)
             {
-                wallList.AddRange(current.GetNeighbors.Where(n => n.IsWall));
-                foreach (Cell cell in wallList) if (cell.GetNeighbors.Count(n => !n.IsWall) != 1) wallList.Remove(cell);
-                current = wallList[new Random().Next(wallList.Count)];
-                wallList.Remove(current);
-                current.IsWall = false;
+                Cell nextWall = wallList[new Random().Next(wallList.Count)];
+                wallList.Remove(nextWall);
+                nextWall.IsWall = false;
+                Game1.Instance.AddEvent(new TimedEvent(() => Generate(nextWall), 0));
+            } else
+            {
+                grid.EndCell.IsWall = false;
+                foreach (Cell c in grid.EndCell.GetRoundNeighbors) c.IsWall = false;
             }
-            /* Commencer au premier noeud
-             * Ajouter tous ses murs voisinnants dans la liste des murs à visiter, SAUF ceux qui ont plus de 2 voisins "Chemins"
-             * Tant qu'il y a des murs dans la liste, prendre un mur au hasard de la liste et recommencer.
-             * 
-             */
         }
     }
 }

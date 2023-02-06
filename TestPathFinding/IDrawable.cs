@@ -17,7 +17,7 @@ namespace TestPathFinding
             Transform = rectangle;
             DrawColor = color;
         }
-
+        public abstract void Update();
         public abstract void Draw(SpriteBatch sbatch);
     }
 }

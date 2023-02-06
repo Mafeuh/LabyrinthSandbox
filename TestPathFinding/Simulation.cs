@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -12,6 +13,10 @@ namespace TestPathFinding
     public class Simulation
     {
         private List<Cell> activeCells = new List<Cell>();
+        /// <summary>
+        /// Just a percentage, can be used for a lot of things
+        /// </summary>
+        public Single Percentage { get; set; }
         public bool AutoPlay { get; set; } = false;
         public bool Reverse { get; set; } = false;
         public bool IsPaused { get; set; } = true;
@@ -93,11 +98,35 @@ namespace TestPathFinding
         {
             List<ADrawable> ui = new List<ADrawable>()
             {
-                new Label("Simulation", new Point(5, 2), Color.Black),
-                new Label($"{WGA.AlgorithmName}", new Point(5, 20), Color.Black),
-                new Button(" < ", 5, 40, Color.Black, () => { }),
-                new Button(" > ", 60, 40, Color.Black,() => { }),
-                new Button("Generate Walls", 120, 2, Color.Black,() => { WGA.Generate(); })
+                new Label<string>("Simulation", new Point(5, 2), Color.Black),
+                new Label<string>(WGA.AlgorithmName, new Point(5, 20), Color.Black),
+                new Button(" < ", 5, 40, Color.Black, () => { PrevWallGenType(); }),
+                new Button(" > ", 60, 40, Color.Black,() => { NextWallGenType(); }),
+                new Button("Clear", 120, 40, Color.Black, () =>
+                {
+                    foreach(Cell c in Grid.GetAllCells)
+                    {
+                        c.IsVisited = false;
+                        c.IsWall = false;
+                        c.IsActive = false;
+                        c.IsDead = false;
+                        c.ParentOnPath = false;
+                    }
+                }),
+                new Button("Generate Walls", 120, 2, Color.Black,() => { WGA.Generate(); }),
+                new Button("Solve", 400, 10, Color.Black, () => { SwitchPauseState(); }),
+
+                new Button("TestVoisins", 400, 50, Color.Black, () =>
+                {
+                    foreach(Cell c in Grid.StartCell.GetNeighbors)
+                    {
+                        c.IsVisited = true;
+                    }
+                }),
+                new Button("Test2", 400, 80, Color.Black, () =>
+                {
+                    Grid.GetCell(2, Grid.Height - 1).IsVisited = true;
+                })
             };
             foreach (var element in ui)
             {
@@ -140,6 +169,27 @@ namespace TestPathFinding
             IsPaused = true;
             Grid.Clear();
             PathToShow.Clear();
+        }
+
+        public void NextWallGenType()
+        {
+            int indexOfNext = WallGenerationAlgorithm.WGAList.IndexOf(WGA.GetType()) + 1;
+            if (indexOfNext == WallGenerationAlgorithm.WGAList.Count)
+            {
+                indexOfNext = 0;
+            }
+
+            WGA = (WallGenerationAlgorithm)Activator.CreateInstance(WallGenerationAlgorithm.WGAList[indexOfNext]);
+        }
+
+        public void PrevWallGenType()
+        {
+            int indexOfPrev = WallGenerationAlgorithm.WGAList.IndexOf(WGA.GetType()) - 1;
+            if(indexOfPrev == -1)
+            {
+                indexOfPrev = WallGenerationAlgorithm.WGAList.Count - 1;
+            }
+            WGA = (WallGenerationAlgorithm)Activator.CreateInstance(WallGenerationAlgorithm.WGAList[indexOfPrev]);
         }
     }
 }

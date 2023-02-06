@@ -14,7 +14,7 @@ namespace TestPathFinding
         private SpriteBatch _spriteBatch;
         private MouseState curState;
         private MouseState prevState;
-        public static Simulation simulation = new Simulation(new Grid(50, 30));
+        public static Simulation simulation = new Simulation(new Grid(100, 50));
         public static Texture2D px1;
         public static SpriteFont font;
         public static bool LeftClick;
@@ -177,7 +177,7 @@ namespace TestPathFinding
             // TODO: Add your initialization logic here
             
             Window.IsBorderless = true;
-            
+
             _graphics.ApplyChanges();
 
             base.Initialize();
